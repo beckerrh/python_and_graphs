@@ -57,7 +57,7 @@ print(f"{last=} {l=}")
 The last print statement is the most efficient. It uses *f-strings*, notice the usage of the =-sign; the curly braces are used for variable substitution.
 
 # Graph as edge list
-We consider a directed graph $G=(V,E)$ with $n=\#V$ edges and $m=\#E$ edges. The vertices of $V$ are identfied by means of a numbering $[1,\cdots,n]\to V$. The graph is now fully described by a list of all edges, an edge being represented as a two-element list of indices. For example:
+We consider a directed graph $G=(V,E)$ with $n={\rm card} V$ edges and $m={\rm card}E$ edges. The vertices of $V$ are identfied by means of a numbering $[1,\cdots,n]\to V$. The graph is now fully described by a list of all edges, an edge being represented as a two-element list of indices. For example:
 
 
 ```python
@@ -87,7 +87,7 @@ nx.draw(G, with_labels = True)
 The list of edges can be deintified with a matrix $B\in\{0,1\}^{n\times m}$, where
 
 $$
-B_{ij) =
+B_{ij} =
 \begin{cases}
 1 &\quad \text{vertex $i$ is incident with edge $j$},\\
 0 &\quad \text{else}.
