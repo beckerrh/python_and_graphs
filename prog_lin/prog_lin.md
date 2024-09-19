@@ -91,12 +91,38 @@ plt.show()
     
 
 
+Let's solve this problem with *scipy*. The  [*linprog*](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linprog.html) function minimizes, so we use the usual trick.
+
 
 ```python
-
+from scipy import optimize
+optimize.linprog(-c, A_ub=A, b_ub=b)
 ```
 
 
-```python
 
+
+            message: Optimization terminated successfully. (HiGHS Status 7: Optimal)
+            success: True
+             status: 0
+                fun: -287.5
+                  x: [ 3.750e+01  2.500e+01]
+                nit: 2
+              lower:  residual: [ 3.750e+01  2.500e+01]
+                     marginals: [ 0.000e+00  0.000e+00]
+              upper:  residual: [       inf        inf]
+                     marginals: [ 0.000e+00  0.000e+00]
+              eqlin:  residual: []
+                     marginals: []
+            ineqlin:  residual: [ 0.000e+00  0.000e+00]
+                     marginals: [-1.500e+00 -1.750e+00]
+     mip_node_count: 0
+     mip_dual_bound: 0.0
+            mip_gap: 0.0
+
+
+
+
+```python
+So we get the expected solution. Of coarse, the optimal value is the 287.5.
 ```
