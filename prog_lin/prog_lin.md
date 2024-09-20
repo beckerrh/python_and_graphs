@@ -122,7 +122,11 @@ optimize.linprog(-c, A_ub=A, b_ub=b)
 
 
 
+So we get the expected solution. Of coarse, the optimal value is the 287.5. *Notice*: we also get the dual solution (which also has to be multiplied by -1) 
+as 'marginals':
+The shadow prices are 1.5 and 1.75 for the two ressources.
+
 
 ```python
-So we get the expected solution. Of coarse, the optimal value is the 287.5.
+
 ```
