@@ -80,7 +80,8 @@ c = np.ones(12)
 c[-2:]=0
 # rearrange for linprog (taking only '<=' constraints)!
 b = np.block([y,-y])
-A = np.block([[-np.eye(10), np.ones(10).reshape(10,1),x.reshape(10,1)],[-np.eye(10), -np.ones(10).reshape(10,1),-x.reshape(10,1)]])
+I, e = np.eye(10), np.ones(10).reshape(10,1)
+A = np.block([[-I, e, x.reshape(10,1)],[-I, -e,-x.reshape(10,1)]])
 #print(f"{b=}\\{c=}\\{A=}")
 resultL1 = optimize.linprog(c, A_ub=A, b_ub=b, bounds=(None,None))
 ```
@@ -131,7 +132,46 @@ plt.show()
     
 
 
-We observe that the $l_1$-fit is less sensible than the $l_2$-fit to data 'far away'.
+We observe that the $l_1$-fit is less sensible than the $l_2$-fit to outlayers, data 'far away'.
+
+Quite the opposite happens, if we minimize the residual in the $l_{\infty}$-norm. Again, this can be written as a LP:
+$$
+\min\left\{z \;\vert\; z \ge r_i \;\text{and}\; z\ge -r_i\; \forall i\right\},
+$$
+or in matrix notation
+$$
+\begin{aligned}
+&\min z,\\
+&ze - a e - b x \ge -y,\\ 
+&ze + a e + b x \ge y. 
+\end{aligned}
+$$
+So we can feed this to *scipy.linprog* and compare with the previous results.
+
+
+```python
+b = np.block([y,-y])
+A = np.block([[-e, e, x.reshape(10,1)],[-e, -e,-x.reshape(10,1)]])
+c = [1,0,0]
+resultLinf = optimize.linprog(c, A_ub=A, b_ub=b, bounds=(None,None))
+plt.plot(x, y, 'o', label='original data')
+a,b = resultL2.intercept, resultL2.slope
+plt.plot(x, a + b*x, 'r', label=f'l2-fitted line y={a:6.3f}+{b:6.3f}*x')
+a,b = resultL1.x[-2], resultL1.x[-1]
+plt.plot(x, a + b*x, 'k', label=f'l1-fitted line y={a:6.3f}+{b:6.3f}*x')
+a,b = resultLinf.x[-2], resultLinf.x[-1]
+plt.plot(x, a + b*x, 'g', label=f'linf-fitted line y={a:6.3f}+{b:6.3f}*x')
+plt.legend()
+plt.show()
+```
+
+
+    
+![png](output_10_0.png)
+    
+
+
+Quite a change! Even the sign of the slope has changed.
 
 
 ```python
